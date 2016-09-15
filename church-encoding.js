@@ -1,3 +1,35 @@
+var ZERO = function(f) {
+	return function(x) {
+		return x;
+	}
+}
+
+var ONE = function(f) {
+	return function(x) {
+		return f(ZERO(f)(x));
+	}
+}
+
+var TWO = function(f) {
+	return function(x) {
+		return f(ONE(f)(x));
+	}
+}
+
+var THREE = function(f) {
+	return function(x) {
+		return f(TWO(f)(x));
+	}
+}
+
+var SUCC = function(n) {
+	return function(f) {
+		return function(x) {
+			return f(n(f)(x));
+		}
+	}
+}
+
 var TRUE = function(a) {
 	return function(b) {
 		return a;
@@ -42,8 +74,8 @@ var IF = function(p) {
 
 var PAIR = function(a) {
 	return function(b) {
-		return function(FALSE) {
-			return FALSE(a)(b);
+		return function(f) {
+			return f(a)(b);
 		}
 	}
 }
@@ -56,7 +88,8 @@ var TAIL = function(p) {
 	return p(FALSE);
 }
 
-var p1 = PAIR(1)(0);
-var p2 = PAIR(2)(p1);
+var f = function(x) {
+	return x + 1;
+}
 
-console.log(XOR(FALSE)(TRUE));
+console.log(SUCC(THREE)(f)(0));
