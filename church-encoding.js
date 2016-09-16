@@ -1,95 +1,93 @@
-var ZERO = function(f) {
-	return function(x) {
-		return x;
-	}
-}
+module.exports = function () {
+	var self = this;
 
-var ONE = function(f) {
-	return function(x) {
-		return f(ZERO(f)(x));
-	}
-}
-
-var TWO = function(f) {
-	return function(x) {
-		return f(ONE(f)(x));
-	}
-}
-
-var THREE = function(f) {
-	return function(x) {
-		return f(TWO(f)(x));
-	}
-}
-
-var SUCC = function(n) {
-	return function(f) {
-		return function(x) {
-			return f(n(f)(x));
+	self.ZERO = function (f) {
+		return function (x) {
+			return x;
 		}
 	}
-}
 
-var TRUE = function(a) {
-	return function(b) {
-		return a;
-	}
-}
-
-var FALSE = function(a) {
-	return function(b) {
-		return b;
-	}
-}
-
-var NOT = function(b) {
-	return b(FALSE)(TRUE);
-}
-
-var AND = function(a) {
-	return function(b) {
-		return a(b)(FALSE);
-	}
-}
-
-var OR = function(a) {
-	return function(b) {
-		return a(TRUE)(b);
-	}
-}
-
-var XOR = function(a) {
-	return function(b) {
-		return a(NOT(b))(b);
-	}
-}
-
-var IF = function(p) {
-	return function(a) {
-		return function(b) {
-			return p(a)(b);
+	self.ONE = function (f) {
+		return function (x) {
+			return f(self.ZERO(f)(x));
 		}
 	}
-}
 
-var PAIR = function(a) {
-	return function(b) {
-		return function(f) {
-			return f(a)(b);
+	self.TWO = function (f) {
+		return function (x) {
+			return f(self.ONE(f)(x));
 		}
 	}
-}
 
-var HEAD = function(p) {
-	return p(TRUE);
-}
+	self.THREE = function (f) {
+		return function (x) {
+			return f(self.TWO(f)(x));
+		}
+	}
 
-var TAIL = function(p) {
-	return p(FALSE);
-}
+	self.SUCC = function (n) {
+		return function (f) {
+			return function (x) {
+				return f(n(f)(x));
+			}
+		}
+	}
 
-var f = function(x) {
-	return x + 1;
-}
+	self.TRUE = function (a) {
+		return function (b) {
+			return a;
+		}
+	}
 
-console.log(SUCC(THREE)(f)(0));
+	self.FALSE = function (a) {
+		return function (b) {
+			return b;
+		}
+	}
+
+	self.NOT = function (b) {
+		return b(self.FALSE)(self.TRUE);
+	}
+
+	self.AND = function (a) {
+		return function (b) {
+			return a(b)(self.FALSE);
+		}
+	}
+
+	self.OR = function (a) {
+		return function (b) {
+			return a(self.TRUE)(b);
+		}
+	}
+
+	self.XOR = function (a) {
+		return function (b) {
+			return a(self.NOT(b))(b);
+		}
+	}
+
+	self.IF = function (p) {
+		return function (a) {
+			return function (b) {
+				return p(a)(b);
+			}
+		}
+	}
+
+	self.PAIR = function (a) {
+		return function (b) {
+			return function (f) {
+				return f(a)(b);
+			}
+		}
+	}
+
+	self.HEAD = function (p) {
+		return p(self.TRUE);
+	}
+
+	self.TAIL = function (p) {
+		return p(self.FALSE);
+	}
+};
